@@ -8,7 +8,7 @@ Instructor: Rob Hess
 
 
 Team Members:
-George Harder
-Chris Hull
-Brian Boly
+George Harder,
+Chris Hull,
+Brian Boly,
 Zachary Iverson
