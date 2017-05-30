@@ -12,19 +12,45 @@ import com.example.cryptocurrencyapp.utils.CryptonatorUtils;
  */
 
 public class CryptoCurrencyDetailActivity extends AppCompatActivity {
-    private TextView mCryptoCurrencyTV;
+    private TextView mCryptoCurrencyNameTv;
+    private TextView mCryptoCurrencyPriceTv;
+    private TextView mCryptoCurrencyChangeTv;
+    private TextView mCryptoCurrencyVolumeTv;
+
+    private CryptonatorUtils.CryptoCurrencyItem mCryptoItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.crypto_currency_item);
 
-        mCryptoCurrencyTV = (TextView)findViewById(R.id.tv_crypto_currency_text);
+        mCryptoCurrencyNameTv = (TextView)findViewById(R.id.tv_crypto_currency_name);
+        mCryptoCurrencyPriceTv = (TextView)findViewById(R.id.tv_crypto_currency_price);
+        mCryptoCurrencyChangeTv = (TextView)findViewById(R.id.tv_crypto_currency_change);
+        mCryptoCurrencyVolumeTv = (TextView)findViewById(R.id.tv_crypto_currency_volume);
+
+
+
 
         Intent intent = getIntent();
         if (intent != null) {
-            CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem = (CryptonatorUtils.CryptoCurrencyItem) intent.getSerializableExtra(CryptonatorUtils.CryptoCurrencyItem.EXTRA_CRYPTO_RESULT);
-            mCryptoCurrencyTV.setText(cryptoCurrencyItem.toString());
+            mCryptoItem = (CryptonatorUtils.CryptoCurrencyItem) intent.getSerializableExtra(CryptonatorUtils.CryptoCurrencyItem.EXTRA_CRYPTO_RESULT);
         }
+
+    }
+
+
+    private void fillInLayoutText(CryptonatorUtils.CryptoCurrencyItem CryptoItem)
+    {
+
+        mCryptoCurrencyNameTv.setText("BitCoin");
+        mCryptoCurrencyPriceTv.setText("10000");
+        mCryptoCurrencyChangeTv.setText("12 Hours");
+        mCryptoCurrencyVolumeTv.setText("Alot of shit");
+//
+//        mCryptoCurrencyNameTv.setText(CryptoItem.toString());
+//        mCryptoCurrencyPriceTv.setText(CryptoItem.toString());
+//        mCryptoCurrencyChangeTv.setText(CryptoItem.toString());
+//        mCryptoCurrencyVolumeTv.setText(CryptoItem.toString());
     }
 }
