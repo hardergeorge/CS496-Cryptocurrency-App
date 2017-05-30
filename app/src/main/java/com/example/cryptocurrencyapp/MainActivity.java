@@ -47,9 +47,15 @@ public class MainActivity extends AppCompatActivity implements CryptoCurrencyAda
     }
 
     private void doCryptonatorSearch() {
-        String cryptonatorURL = CryptonatorUtils.buildCryptonatorURL("btc-usd");
-        Log.d("MainActivity", "got search url: " + cryptonatorURL);
-        new CryptoCurrencySearchTask().execute(cryptonatorURL);
+        ArrayList<String> cryptonatorURLs = new ArrayList<>();
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("btc-usd"));
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("eth-usd"));
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("ltc-usd"));
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("xmr-usd"));
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("xrp-usd"));
+        cryptonatorURLs.add(CryptonatorUtils.buildCryptonatorURL("doge-usd"));
+        Log.d("MainActivity", "got search url: " + cryptonatorURLs.toString());
+        new CryptoCurrencySearchTask().execute(cryptonatorURLs);
     }
 
     @Override
@@ -60,7 +66,21 @@ public class MainActivity extends AppCompatActivity implements CryptoCurrencyAda
     }
 
 
-    public class CryptoCurrencySearchTask extends AsyncTask<String, Void, String> {
+    public class CryptoCurrencySearchTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+        @Override
+        protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+            ArrayList<String> searchResults = new ArrayList<>();
+            for(int i = 0; i < params[0].size();i++) {
+                String cryptoSearchURL = params[0].get(i);
+                try {
+                    searchResults.add(NetworkUtils.doHTTPGet(cryptoSearchURL));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return searchResults;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -68,26 +88,14 @@ public class MainActivity extends AppCompatActivity implements CryptoCurrencyAda
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            String cryptoSearchURL = params[0];
-            String searchResults = null;
-            try {
-                searchResults = NetworkUtils.doHTTPGet(cryptoSearchURL);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return searchResults;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(ArrayList<String> s) {
             Log.d("PostExecute", "got to the post execute" + s);
 
             mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
             if (s != null) {
                 mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
                 mSearchResultsRV.setVisibility(View.VISIBLE);
-                CryptonatorUtils.CryptoCurrencyItem searchResult = CryptonatorUtils.parseCryptocurrencyJSON(s);
+                ArrayList<CryptonatorUtils.CryptoCurrencyItem> searchResult = CryptonatorUtils.parseCryptocurrencyJSON(s);
                 mcryptoCurrencyAdapter.updateCryptoCurrencyItems(searchResult);
             } else {
                 mSearchResultsRV.setVisibility(View.INVISIBLE);

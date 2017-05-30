@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAdapter.CryptoCurrencyItemViewHolder> {
-    private CryptonatorUtils.CryptoCurrencyItem mCryptoCurrencyItem;
+    private ArrayList<CryptonatorUtils.CryptoCurrencyItem> mCryptoCurrencyItems;
     private OnCryptoItemClickListener mCryptoItemClickListener;
 
     public interface OnCryptoItemClickListener {
@@ -28,14 +28,18 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
         mCryptoItemClickListener = clickListener;
     }
 
-    public void updateCryptoCurrencyItems(CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem) {
-        mCryptoCurrencyItem = cryptoCurrencyItem;
+    public void updateCryptoCurrencyItems(ArrayList<CryptonatorUtils.CryptoCurrencyItem> cryptoCurrencyItem) {
+        mCryptoCurrencyItems = cryptoCurrencyItem;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (mCryptoCurrencyItems != null) {
+            return mCryptoCurrencyItems.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -47,7 +51,7 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
 
     @Override
     public void onBindViewHolder(CryptoCurrencyItemViewHolder holder, int position) {
-        //holder.bind(mCryptoCurrencyItem.get(position));
+        holder.bind(mCryptoCurrencyItems.get(position));
     }
 
     class CryptoCurrencyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -60,12 +64,12 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
         }
 
         public void bind(CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem) {
-           mCryptoCurrencyTV.setText(cryptoCurrencyItem.toString());
+           mCryptoCurrencyTV.setText(cryptoCurrencyItem.name.toString());
         }
 
         @Override
         public void onClick(View v) {
-            CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem = mCryptoCurrencyItem;
+            CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem = mCryptoCurrencyItems.get(getAdapterPosition());
             mCryptoItemClickListener.onCryptoItemClick(cryptoCurrencyItem);
         }
     }

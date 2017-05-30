@@ -34,20 +34,25 @@ public class CryptonatorUtils {
                 .toString();
     }
 
-    public static CryptoCurrencyItem parseCryptocurrencyJSON(String cryptocurrencyJSON) {
+    public static ArrayList<CryptoCurrencyItem> parseCryptocurrencyJSON(ArrayList<String> cryptocurrencyJSON) {
         try {
-            JSONObject cryptoCurrencyObj = new JSONObject(cryptocurrencyJSON);
-            cryptoCurrencyObj = cryptoCurrencyObj.getJSONObject("ticker");
+            ArrayList<CryptoCurrencyItem> cryptoItems = new ArrayList<>();
+            for(int i = 0; i < cryptocurrencyJSON.size(); i++) {
+                JSONObject cryptoCurrencyObj = new JSONObject(cryptocurrencyJSON.get(i));
+                cryptoCurrencyObj = cryptoCurrencyObj.getJSONObject("ticker");
 
-            //ArrayList<CryptoCurrencyItem> cryptoCurrencyItemsList = new ArrayList<>();
-            CryptoCurrencyItem cryptoItem = new CryptoCurrencyItem();
+                //ArrayList<CryptoCurrencyItem> cryptoCurrencyItemsList = new ArrayList<>();
+                CryptoCurrencyItem cryptoItem = new CryptoCurrencyItem();
 
-            cryptoItem.name = cryptoCurrencyObj.getString("base");
-            cryptoItem.price = cryptoCurrencyObj.getDouble("price");
-            cryptoItem.change = cryptoCurrencyObj.getDouble("change");
-            cryptoItem.volume = cryptoCurrencyObj.getDouble("volume");
+                cryptoItem.name = cryptoCurrencyObj.getString("base");
+                cryptoItem.price = cryptoCurrencyObj.getDouble("price");
+                cryptoItem.change = cryptoCurrencyObj.getDouble("change");
+                cryptoItem.volume = cryptoCurrencyObj.getDouble("volume");
 
-            return cryptoItem;
+                cryptoItems.add(cryptoItem);
+
+            }
+            return cryptoItems;
 
         } catch (JSONException e) {
             e.printStackTrace();
