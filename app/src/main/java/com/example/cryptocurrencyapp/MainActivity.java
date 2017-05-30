@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements CryptoCurrencyAda
             if (s != null) {
                 mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
                 mSearchResultsRV.setVisibility(View.VISIBLE);
-                ArrayList<CryptonatorUtils.CryptoCurrencyItem> searchResultsList = CryptonatorUtils.parseCryptocurrencyJSON(s);
-                mcryptoCurrencyAdapter.updateCryptoCurrencyItems(searchResultsList);
+                CryptonatorUtils.CryptoCurrencyItem searchResult = CryptonatorUtils.parseCryptocurrencyJSON(s);
+                mcryptoCurrencyAdapter.updateCryptoCurrencyItems(searchResult);
             } else {
                 mSearchResultsRV.setVisibility(View.INVISIBLE);
                 mLoadingErrorMessageTV.setVisibility(View.VISIBLE);

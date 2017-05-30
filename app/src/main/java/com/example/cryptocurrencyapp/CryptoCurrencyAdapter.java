@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAdapter.CryptoCurrencyItemViewHolder> {
-    private ArrayList<CryptonatorUtils.CryptoCurrencyItem> mCryptoCurrencyItems;
+    private CryptonatorUtils.CryptoCurrencyItem mCryptoCurrencyItem;
     private OnCryptoItemClickListener mCryptoItemClickListener;
 
     public interface OnCryptoItemClickListener {
@@ -28,18 +28,14 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
         mCryptoItemClickListener = clickListener;
     }
 
-    public void updateCryptoCurrencyItems(ArrayList<CryptonatorUtils.CryptoCurrencyItem> cryptoCurrencyItems) {
-        mCryptoCurrencyItems = cryptoCurrencyItems;
+    public void updateCryptoCurrencyItems(CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem) {
+        mCryptoCurrencyItem = cryptoCurrencyItem;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mCryptoCurrencyItems != null) {
-            return mCryptoCurrencyItems.size();
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     @Override
@@ -51,7 +47,7 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
 
     @Override
     public void onBindViewHolder(CryptoCurrencyItemViewHolder holder, int position) {
-        holder.bind(mCryptoCurrencyItems.get(position));
+        //holder.bind(mCryptoCurrencyItem.get(position));
     }
 
     class CryptoCurrencyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -69,7 +65,7 @@ public class CryptoCurrencyAdapter extends RecyclerView.Adapter<CryptoCurrencyAd
 
         @Override
         public void onClick(View v) {
-            CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem = mCryptoCurrencyItems.get(getAdapterPosition());
+            CryptonatorUtils.CryptoCurrencyItem cryptoCurrencyItem = mCryptoCurrencyItem;
             mCryptoItemClickListener.onCryptoItemClick(cryptoCurrencyItem);
         }
     }

@@ -20,9 +20,10 @@ public class CryptonatorUtils {
 
     public static class CryptoCurrencyItem implements Serializable {
         public static final String EXTRA_CRYPTO_RESULT = "CryptonatorUtils.CryptoCurrencyItem";
-
-        //TODO: Add fields
-        String name;
+        public String name;
+        public Double price;
+        public Double change;
+        public Double volume;
     }
 
     public static String buildCryptonatorURL (String currencyName) {
@@ -33,17 +34,20 @@ public class CryptonatorUtils {
                 .toString();
     }
 
-    public static ArrayList<CryptoCurrencyItem> parseCryptocurrencyJSON(String cryptocurrencyJSON) {
+    public static CryptoCurrencyItem parseCryptocurrencyJSON(String cryptocurrencyJSON) {
         try {
             JSONObject cryptoCurrencyObj = new JSONObject(cryptocurrencyJSON);
-            JSONArray cryptoCurrencyList = cryptoCurrencyObj.getJSONArray("ticker");
+            cryptoCurrencyObj = cryptoCurrencyObj.getJSONObject("ticker");
 
-            ArrayList<CryptoCurrencyItem> cryptoCurrencyItemsList = new ArrayList<>();
+            //ArrayList<CryptoCurrencyItem> cryptoCurrencyItemsList = new ArrayList<>();
+            CryptoCurrencyItem cryptoItem = new CryptoCurrencyItem();
 
-            for (int i = 0; i < cryptoCurrencyList.length(); i++) {
-                //TODO: parse JSON
-            }
-            return cryptoCurrencyItemsList;
+            cryptoItem.name = cryptoCurrencyObj.getString("base");
+            cryptoItem.price = cryptoCurrencyObj.getDouble("price");
+            cryptoItem.change = cryptoCurrencyObj.getDouble("change");
+            cryptoItem.volume = cryptoCurrencyObj.getDouble("volume");
+
+            return cryptoItem;
 
         } catch (JSONException e) {
             e.printStackTrace();
